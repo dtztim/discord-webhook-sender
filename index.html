@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Discord Webhook Sender</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <style>
+            body { max-width: 850px; margin: 0 auto;}
+            .option { display: flex; flex-direction: column; align-items: start; margin-bottom: 12px;}
+        </style>
+    </head>
+    <body>
+        <h1>Discord Webhook Sender</h1>
+        <p>A simple webhook sender for <a href="https://discord.com">Discord</a> but simplified because I don't want to be overwelmed when sending invite code with style.</p>
+        <p><strong>Accept Markdown support</strong></p>
+        <hr>
+        <div id="webhook">
+            <div class="option">
+                <label for="webhook_url">Webhook URL</label>
+                <input style="width: 400px;" type="text" id="webhook_url">
+            </div>
+            <div class="option">
+                <label for="webhook_content">Text</label>
+                <textarea style="width: 400px; height: 200px;" id="webhook_content"></textarea>
+            </div>
+            <button id="webhook_submit">Send the webhook</button>
+            <p id="webhook_response" style="color: #b19600;"</p>
+        </div>
+        <hr>
+        <p>Web tool made by <a href="https://github.com/dtztim">dtztim</a> with a small amount of coffee since it was quite fast...<br><a href="https://github.com/dtztim/discord-webhook-sender">Repository</a> | </p>
+    </body>
+    <script>
+        function sendWH() {
+            var request = new XMLHttpRequest();
+            request.open(
+                'POST',
+                document.getElementById('webhook_url').value,
+            );
+
+            request.setRequestHeader('Content-type', 'application/json');
+
+            var params = {
+                content: document.getElementById('webhook_content').value,
+            };
+
+            request.send(JSON.stringify(params));
+        }
+        
+        document.getElementById('webhook_submit').addEventListener('click', () => {
+            if (document.getElementById('webhook_url').value.length == 0 || document.getElementById('webhook_content').value.length == 0) {
+                document.getElementById('webhook_response').innerText = "Please fill in all fields.";
+            } else {
+                document.getElementById('webhook_response').innerText = "Sending webhook...";
+                sendWH();
+                document.getElementById('webhook_response').innerText = "Webhook sent!";
+            }
+        })
+    </script>
+</html>
